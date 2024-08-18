@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 5rem auto 0;
+}
+
+.imageCover {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 1024px) {
+  .imageCover {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .imageCover {
+    grid-template-columns: 1fr;
+  }
+}
+.imageGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.imageWrap {
+  height: fit-content;
+  position: relative;
+}
+.imageWrap img {
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+.imageWrap img.clickedImg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: all 1s ease-in-out;
+}
+.imageWrap img.zoomImg {
+  width: fit-content;
+  position: absolute;
+  /* transform: translate(-50%, -50%) scale(1); */
+  z-index: 2;
+  transition: all 0.5s ease-in-out;
+  transform-origin: 50% 0px;
+}
+/* 768px */
+/* 1024px */
