@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import CatViewer from "./CatViewer";
-import WorkingHours from "./WorkingHours";
+import CatViewer from "./CatViewer/CatViewer";
+import WorkingHours from "./WorkingHours/WorkingHours";
 import "./App.css";
 
 const App: React.FC = () => {

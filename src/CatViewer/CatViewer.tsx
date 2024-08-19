@@ -1,7 +1,7 @@
 import styles from "./CatViewer.module.css";
-import useResponsive from "./CatViewer/useResponsive";
-import useInfiniteScroll from "./CatViewer/useInfiniteScroll";
-import useGroupedImages from "./CatViewer/useGroupedImages";
+import useResponsive from "./useResponsive";
+import useInfiniteScroll from "./useInfiniteScroll";
+import useGroupedImages from "./useGroupedImages";
 
 function CatViewer() {
   const { images, loading, observerRef } = useInfiniteScroll();
