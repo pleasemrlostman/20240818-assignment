@@ -1,126 +1,89 @@
-import { generateTimeOptions, meetingDayInfo } from "./util";
+import RangeInput from "./RangeInput";
+import { meetingDayInfo } from "./util";
 import styles from "./WorkingHours.module.css";
-import { useForm, useFieldArray, Controller, Control } from "react-hook-form";
+import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
 
-export interface TimeSlot {
-  start: string;
-  end: string;
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { schema } from "./workingHours.schema";
 
-export interface MeetingDay {
-  id: number;
-  name: string;
-  value: TimeSlot[];
-}
-
-export interface FormValues {
-  meetingDate: MeetingDay[];
-}
-
-const timeOptions = [
-  { label: "09:00", value: "09:00" },
-  { label: "10:00", value: "10:00" },
-  { label: "11:00", value: "11:00" },
-  { label: "12:00", value: "12:00" },
-  { label: "13:00", value: "13:00" },
-  { label: "14:00", value: "14:00" },
-  { label: "15:00", value: "15:00" },
-  { label: "16:00", value: "16:00" },
-  { label: "17:00", value: "17:00" },
-];
+import { useRecoilState } from "recoil";
+import { meetingDayValuesState } from "./meetingDayState";
 
 function WorkingHours() {
-  const { control } = useForm<FormValues>({
-    defaultValues: meetingDayInfo,
-  });
+  const [meetingDayValues, setMeetingDayValues] = useRecoilState(
+    meetingDayValuesState
+  );
 
+  console.log("meetingDayValues", meetingDayValues);
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isDirty, errors },
+  } = useForm<MeetingDayValues>({
+    resolver: zodResolver(schema),
+    defaultValues:
+      meetingDayValues.meetingDate.length === 0
+        ? meetingDayInfo
+        : meetingDayValues,
+  });
   const { fields } = useFieldArray({
     control,
     name: "meetingDate",
   });
 
+  const onSubmit = (data: MeetingDayValues) => {
+    console.log("data", data);
+    setMeetingDayValues(data);
+  };
+  const onError = (error: FieldErrors<MeetingDayValues>) => {
+    console.log("error", error);
+  };
+
   return (
     <div className={styles.container}>
       <div>2번 과제 - WorkingHours</div>
-      {fields.map((day, dayIndex) => {
-        return <테스트 fields={fields} control={control} index={dayIndex} />;
-      })}
+      <main className={styles.wrap}>
+        <section>
+          <h2>Working hour</h2>
+        </section>
+        <form
+          onSubmit={handleSubmit(onSubmit, onError)}
+          className={styles.cover}
+        >
+          <h3>set your weekly hours</h3>
+          {fields.map((_, index) => {
+            return (
+              <RangeInput fields={fields} control={control} index={index} />
+            );
+          })}
+          {isDirty && (
+            <div className={styles.formButtonWrap}>
+              <button
+                className={`${styles.formButton} ${styles.formButtonClear}`}
+                onClick={() => {
+                  reset();
+                }}
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                disabled={errors.meetingDate ? true : false}
+                className={`${styles.formButton} ${styles.formButtonSubmit} ${
+                  errors.meetingDate ? styles.formButtonSubmitDisabled : null
+                }`}
+                type="submit"
+              >
+                {errors.meetingDate ? "Disabled" : "Update"}
+              </button>
+            </div>
+          )}
+        </form>
+      </main>
     </div>
   );
 }
 
 export default WorkingHours;
-
-const 테스트 = ({
-  fields,
-  control,
-  index: dayIndex,
-}: {
-  fields: any;
-  control: any;
-  index: number;
-}) => {
-  const {
-    fields: valueFields,
-    append: appendValue,
-    remove: removeValue,
-  } = useFieldArray({
-    control,
-    name: `meetingDate.${dayIndex}.value`,
-  });
-
-  console.log("fields", fields[dayIndex]);
-
-  return (
-    <>
-      <div key={fields[dayIndex]?.id}>
-        <h3>{fields[dayIndex]?.name}</h3>
-        {valueFields.map((valueItem, valueIndex) => (
-          <div key={valueItem.id} style={{ marginBottom: "10px" }}>
-            <label>
-              Start Time:
-              <Controller
-                name={`meetingDate.${dayIndex}.value.${valueIndex}.start`}
-                control={control}
-                render={({ field }) => (
-                  <select {...field}>
-                    {timeOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              />
-            </label>
-            <label>
-              End Time:
-              <Controller
-                name={`meetingDate.${dayIndex}.value.${valueIndex}.end`}
-                control={control}
-                render={({ field }) => (
-                  <select {...field}>
-                    {timeOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              />
-            </label>
-            <button type="button" onClick={() => removeValue(valueIndex)}>
-              Delete Time Slot
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => appendValue({ start: "09:00", end: "09:00" })}
-        >
-          ADD Time Slot
-        </button>
-      </div>
-    </>
-  );
-};
