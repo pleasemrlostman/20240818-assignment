@@ -28,12 +28,11 @@
 .imageWrap {
   height: fit-content;
   position: relative;
+  cursor: pointer;
 }
 .imageWrap img {
   height: 100%;
   width: 100%;
-  left: 0;
-  top: 0;
 }
 .imageWrap img.clickedImg {
   position: fixed;

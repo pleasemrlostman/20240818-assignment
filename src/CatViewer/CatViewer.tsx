@@ -2,39 +2,36 @@ import styles from "./CatViewer.module.css";
 import useResponsive from "./useResponsive";
 import useInfiniteScroll from "./useInfiniteScroll";
 import useGroupedImages from "./useGroupedImages";
+import { calculatePosition } from "./util";
+import { useRef, useState } from "react";
 
 function CatViewer() {
   const { images, loading, observerRef } = useInfiniteScroll();
   const { deviceType } = useResponsive();
   const groupedImages = useGroupedImages(images, deviceType);
 
-  const handleClick = (id: string, url: string) => {
-    // 클릭된 div의 참조를 가져옵니다.
-    const element = document.getElementById(id);
+  const handleClick = (id: string) => {
+    const element = document.getElementById(id) as HTMLDivElement;
 
-    // 새로운 span 태그를 생성합니다.
-    const imageTag = document.createElement("img");
-    imageTag.src = url;
-    imageTag.className = styles.clickedImg;
-
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-
-    const imageWidth = imageTag.offsetWidth;
-    const imageHeight = imageTag.offsetHeight;
-
-    const translateX = (screenWidth - imageWidth) / 2;
-    const translateY = (screenHeight - imageHeight) / 2;
-    // 생성한 span 태그를 클릭된 div에 추가합니다.
     if (element) {
-      element.appendChild(imageTag);
-    }
-    setTimeout(() => {
-      imageTag.style.transform = `translate(${translateX}px, ${translateY}px) scale(2)`;
-      imageTag.className = styles.zoomImg;
-    }, 2000);
-  };
+      // 애니메이션을 열기 시작
+      requestAnimationFrame(() => {
+        calculatePosition("open")(element, 300); // 300ms 애니메이션
+      });
 
+      // 클릭 이벤트 리스너의 핸들러 함수를 정의합니다.
+      const handleCloseClick = (event: MouseEvent) => {
+        event.stopPropagation(); // 이벤트 버블링을 방지합니다.
+        calculatePosition("close")(element, 300); // 300ms 애니메이션
+
+        // 이벤트 리스너를 제거합니다.
+        element.removeEventListener("click", handleCloseClick);
+      };
+
+      // 클릭 이벤트 리스너를 추가합니다.
+      element.addEventListener("click", handleCloseClick);
+    }
+  };
   return (
     <div className={styles.container}>
       <div>1번 과제 - CatViewer</div>
@@ -42,15 +39,14 @@ function CatViewer() {
         {groupedImages.map((group, groupIndex) => (
           <div key={groupIndex} className={styles.imageGroup}>
             {group.map((value) => (
-              <div
-                key={value.id}
-                id={value.id}
-                className={styles.imageWrap}
-                onClick={() => {
-                  handleClick(value.id, value.url);
-                }}
-              >
-                <img src={value.url} alt={`Cat Image-${value.id}`} />
+              <div key={value.id} className={styles.imageWrap} id={value.id}>
+                <img
+                  onClick={() => {
+                    handleClick(value.id);
+                  }}
+                  src={value.url}
+                  alt={`Cat Image-${value.id}`}
+                />
               </div>
             ))}
           </div>
