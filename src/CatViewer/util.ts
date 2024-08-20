@@ -29,8 +29,8 @@ export function calculatePosition(action: "open" | "close") {
           ? `transform ${transitionMs}ms ease, opacity 0ms`
           : `transform ${transitionMs}ms ease, opacity 0ms ease ${transitionMs}ms, z-index 0ms ease ${transitionMs}ms`,
       zIndex: action === "open" ? "9" : "0",
-      pointerEvents: action === "open" ? "initial" : "none",
-      touchAction: action === "open" ? "initial" : "none",
+      // pointerEvents: action === "open" ? "initial" : "none",
+      // touchAction: action === "open" ? "initial" : "none",
       transformOrigin: "50% 0",
     };
 
