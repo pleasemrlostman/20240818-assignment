@@ -35,6 +35,15 @@ const CatViewer = () => {
           {deviceType === "PC" && <SkeletonNumberGrid number={1} />}
         </div>
       )}
+
+      {/*
+        현재는 에러응답을 따로 받고있지만 
+        서버에서 에러를 200응답값과 함께 보낸다면 
+        아래의 코드를 추가해주면 됨
+
+        => 추가적으로 src/CatViewer/hooks/useInfiniteScroll.tsx에서 
+        getImage 제네릭에도 유니언 타입으로 에러 응답값 추가해야함
+    */}
       {error && <ErrorInform refetch={refetch} />}
     </div>
   );

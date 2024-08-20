@@ -19,7 +19,7 @@ const useInfiniteScroll = () => {
     queryFn: () =>
       getImage<CatViewImage[]>({
         page: pageNumber,
-        limit: 10,
+        limit: 30,
       }),
   });
 
