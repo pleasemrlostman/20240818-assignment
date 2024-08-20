@@ -1,8 +1,8 @@
-import { START_TIME_VALUE } from "./util";
-import styles from "./WorkingHours.module.css";
+import { START_TIME_VALUE } from "../util/util";
+import styles from "../style/WorkingHours.module.css";
 import { useFieldArray, FieldArrayWithId, Control } from "react-hook-form";
 import { RiDeleteBin2Line, RiAddLine } from "@remixicon/react";
-import SelectorInput from "./SelectorInput";
+import SelectorInput from "../components/SelectorInput";
 
 const RangeInput = ({
   fields,

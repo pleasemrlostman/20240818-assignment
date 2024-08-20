@@ -1,4 +1,4 @@
-export function calculatePosition(action: "open" | "close") {
+export const calculatePosition = (action: "open" | "close") => {
   return function calculate(el: HTMLDivElement, transitionMs: number = 0) {
     const { innerWidth, innerHeight } = window;
     const { height, width, top, left } = el.getBoundingClientRect();
@@ -36,4 +36,7 @@ export function calculatePosition(action: "open" | "close") {
 
     Object.assign(el.style, styles);
   };
-}
+};
+
+export const generateRandomNumber = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;

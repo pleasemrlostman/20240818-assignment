@@ -12,9 +12,8 @@ const initialMeetingDayValues: MeetingDayValues = {
   meetingDate: [],
 };
 
-// Create a Recoil atom to hold the MeetingDayValues state
 export const meetingDayValuesState = atom<MeetingDayValues>({
-  key: "meetingDayValuesState", // Unique key for the atom
+  key: "meetingDayValuesState",
   default: initialMeetingDayValues,
-  effects_UNSTABLE: [persistAtom], // Default value for the atom
+  effects_UNSTABLE: [persistAtom],
 });

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getImage } from "./useImageFetcher";
 import { useIntersectionObserver } from "./useIntersectionObserver";
 import { useQuery } from "@tanstack/react-query";
+import { getImage } from "../api/api";
 
 const useInfiniteScroll = () => {
   const [images, setImages] = useState<CatViewImage[]>([]);

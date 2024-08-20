@@ -1,20 +1,18 @@
-import RangeInput from "./RangeInput";
-import { meetingDayInfo } from "./util";
-import styles from "./WorkingHours.module.css";
-import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
+import RangeInput from "./components/RangeInput";
+import { meetingDayInfo } from "./util/util";
+import styles from "./style/WorkingHours.module.css";
+import { useForm, useFieldArray } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { schema } from "./workingHours.schema";
+import { schema } from "./schema/workingHours.schema";
 
 import { useRecoilState } from "recoil";
-import { meetingDayValuesState } from "./meetingDayState";
+import { meetingDayValuesState } from "./recoil/meetingDayState";
 
 function WorkingHours() {
   const [meetingDayValues, setMeetingDayValues] = useRecoilState(
     meetingDayValuesState
   );
-
-  console.log("meetingDayValues", meetingDayValues);
 
   const {
     control,

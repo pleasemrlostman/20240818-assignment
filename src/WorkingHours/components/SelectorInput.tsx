@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useController, Control } from "react-hook-form";
-import { generateTimeOptions } from "./util";
-import styles from "./WorkingHours.module.css";
+import { generateTimeOptions } from "../util/util";
+import styles from "../style/WorkingHours.module.css";
 
 // 드롭다운 리스트를 숨기거나 표시하는 컴포넌트
 const SelectorInput = ({
   fieldName,
   control,
 }: {
-  fieldName: string; // 'any' 대신 'string' 사용
-  control: Control<any>; // 실제 타입을 적절히 수정하세요
+  fieldName: string;
+  control: Control<any>;
 }) => {
   const { field, fieldState } = useController({
     name: fieldName,
@@ -20,13 +20,13 @@ const SelectorInput = ({
   const [selectedTime, setSelectedTime] = useState(field.value || "");
 
   const handleInputClick = () => {
-    setIsOpen(!isOpen); // 클릭 시 드롭다운 토글
+    setIsOpen(!isOpen);
   };
 
   const handleOptionClick = (option: string) => {
     setSelectedTime(option);
     setIsOpen(false);
-    field.onChange(option); // 폼 필드 값 업데이트
+    field.onChange(option);
   };
 
   return (
@@ -37,7 +37,7 @@ const SelectorInput = ({
           type="text"
           value={selectedTime}
           onClick={handleInputClick}
-          readOnly // 사용자가 직접 입력할 수 없도록 설정
+          readOnly
         />
         {isOpen && (
           <ul className={styles.timeOptions}>

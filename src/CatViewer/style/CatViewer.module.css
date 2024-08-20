@@ -86,3 +86,39 @@
     left: -100%;
   }
 }
+.pendingSkeletonWrap {
+  column-count: 3;
+  column-gap: 16px;
+}
+.pendingSkeleton {
+  margin-bottom: 16px;
+}
+
+@media (max-width: 1024px) {
+  .pendingSkeletonWrap {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .pendingSkeletonWrap {
+    column-count: 1;
+  }
+}
+
+.errorInform {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+.errorInform > button {
+  padding: 0;
+  width: 4rem;
+  height: 2rem;
+  border: 1px solid lightgray;
+  background-color: #fff;
+  cursor: pointer;
+}
