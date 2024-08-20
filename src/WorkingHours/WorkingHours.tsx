@@ -33,6 +33,7 @@ function WorkingHours() {
 
   const onSubmit = (data: MeetingDayValues) => {
     setMeetingDayValues(data);
+    alert("Update completed");
   };
 
   return (
@@ -60,6 +61,7 @@ function WorkingHours() {
                 className={`${styles.formButton} ${styles.formButtonClear}`}
                 onClick={() => {
                   reset();
+                  alert("Initialization complete");
                 }}
                 type="button"
               >
