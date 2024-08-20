@@ -1,15 +1,27 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 30,
+      retry: false,
+    },
+  },
+});
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
-  <RecoilRoot>
-    <App />
-  </RecoilRoot>
+  <QueryClientProvider client={queryClient}>
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
   // <React.StrictMode>
   //   <App />
   // </React.StrictMode>

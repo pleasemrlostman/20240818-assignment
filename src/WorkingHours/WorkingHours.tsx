@@ -34,11 +34,7 @@ function WorkingHours() {
   });
 
   const onSubmit = (data: MeetingDayValues) => {
-    console.log("data", data);
     setMeetingDayValues(data);
-  };
-  const onError = (error: FieldErrors<MeetingDayValues>) => {
-    console.log("error", error);
   };
 
   return (
@@ -48,14 +44,16 @@ function WorkingHours() {
         <section>
           <h2>Working hour</h2>
         </section>
-        <form
-          onSubmit={handleSubmit(onSubmit, onError)}
-          className={styles.cover}
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.cover}>
           <h3>set your weekly hours</h3>
           {fields.map((_, index) => {
             return (
-              <RangeInput fields={fields} control={control} index={index} />
+              <RangeInput
+                fields={fields}
+                control={control}
+                index={index}
+                key={index}
+              />
             );
           })}
           {isDirty && (

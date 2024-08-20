@@ -1,24 +1,27 @@
 import { useState, useEffect } from "react";
-import { useImageFetcher } from "./useImageFetcher";
+import { getImage } from "./useImageFetcher";
 import { useIntersectionObserver } from "./useIntersectionObserver";
+import { useQuery } from "@tanstack/react-query";
 
 const useInfiniteScroll = () => {
   const [images, setImages] = useState<CatViewImage[]>([]);
   const [pageNumber, setPageNumber] = useState(0);
-  const [loading, setLoading] = useState(false);
 
-  const fetchImages = useImageFetcher(pageNumber, 10);
-
-  const loadImages = async () => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const catData = await fetchImages();
-      setImages((prev) => [...prev, ...catData]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    data,
+    isLoading: loading,
+    status,
+    error,
+    refetch,
+    isPending,
+  } = useQuery({
+    queryKey: [`repoData-${pageNumber}`],
+    queryFn: () =>
+      getImage<CatViewImage[]>({
+        page: pageNumber,
+        limit: 10,
+      }),
+  });
 
   const observerRef = useIntersectionObserver(() => {
     if (!loading) {
@@ -26,11 +29,19 @@ const useInfiniteScroll = () => {
     }
   });
 
+  const loadImages = async () => {
+    if (data) {
+      setImages((prev) => [...prev, ...data?.data]);
+    }
+  };
+
   useEffect(() => {
     loadImages();
-  }, [pageNumber]);
+  }, [status]);
 
-  return { images, loading, observerRef };
+  console.log("isPending", "isPending", isPending);
+
+  return { images, loading, observerRef, status, error, refetch, isPending };
 };
 
 export default useInfiniteScroll;
