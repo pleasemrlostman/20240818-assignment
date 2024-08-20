@@ -39,8 +39,6 @@ const useInfiniteScroll = () => {
     loadImages();
   }, [status]);
 
-  console.log("isPending", "isPending", isPending);
-
   return { images, loading, observerRef, status, error, refetch, isPending };
 };
 
